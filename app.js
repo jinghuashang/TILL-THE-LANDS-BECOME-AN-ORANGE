@@ -239,6 +239,26 @@
   /* ---------------- 指针交互（拖动 / 旋转 / 缩放） ---------------- */
   let drag = null;
 
+  // 手机竖屏旋转 90° 后，屏幕坐标与页面坐标错位：
+  // 屏幕 (sx,sy) -> 页面 (px,py)：px = W/2 + cy - sy，py = H/2 - cx + sx
+  // （W=root 布局宽=视口高，H=root 布局高=视口宽）
+  function pagePoint(clientX, clientY) {
+    if (!document.body.classList.contains('rotated')) return { x: clientX, y: clientY };
+    const W = innerHeight, H = innerWidth;
+    const cx = innerWidth / 2, cy = innerHeight / 2;
+    return { x: W / 2 + cy - clientY, y: H / 2 - cx + clientX };
+  }
+  function canvasGeom() {
+    const rect = wrap.getBoundingClientRect();
+    const rotated = document.body.classList.contains('rotated');
+    return {
+      w: rotated ? rect.height : rect.width,
+      h: rotated ? rect.width : rect.height,
+      cx: rotated ? innerWidth / 2 : rect.left + rect.width / 2,
+      cy: rotated ? innerHeight / 2 : rect.top + rect.height / 2,
+    };
+  }
+
   function startDrag(e, mode, id) {
     if (drag) return;
     e.preventDefault();
@@ -250,16 +270,16 @@
     if (selEl) selEl.classList.add('selected');
     state.selId = id;
     updatePropPanel();
-    const rect = wrap.getBoundingClientRect();
+    const g = canvasGeom();
+    const p0 = pagePoint(e.clientX, e.clientY);
     drag = {
       mode, id,
-      sx: e.clientX, sy: e.clientY,
+      sx: p0.x, sy: p0.y,
       startX: item.x, startY: item.y,
       startScale: item.scale, startRot: item.rot,
-      cx: rect.left + rect.width / 2,
-      cy: rect.top + rect.height / 2,
-      startDist: Math.hypot(e.clientX - (rect.left + rect.width / 2), e.clientY - (rect.top + rect.height / 2)),
-      startAngle: Math.atan2(e.clientY - (rect.top + rect.height / 2), e.clientX - (rect.left + rect.width / 2)),
+      cx: g.cx, cy: g.cy,
+      startDist: Math.hypot(p0.x - g.cx, p0.y - g.cy),
+      startAngle: Math.atan2(p0.y - g.cy, p0.x - g.cx),
     };
     const tgt = e.target.closest('.sticker') || wrap;
     tgt.classList.add('dragging');
@@ -273,20 +293,21 @@
     if (!drag) return;
     const item = state.items.find((i) => i.id === drag.id);
     if (!item) return;
-    const rect = wrap.getBoundingClientRect();
-    const wPx = rect.width, hPx = rect.height;
-    const dxPx = e.clientX - drag.sx;
-    const dyPx = e.clientY - drag.sy;
+    const g = canvasGeom();
+    const wPx = g.w, hPx = g.h;
+    const p = pagePoint(e.clientX, e.clientY);
+    const dxPx = p.x - drag.sx;
+    const dyPx = p.y - drag.sy;
 
     if (drag.mode === 'move') {
       item.x = Math.min(120, Math.max(-20, drag.startX + dxPx / wPx * 100));
       item.y = Math.min(120, Math.max(-20, drag.startY + dyPx / hPx * 100));
     } else if (drag.mode === 'rotate') {
-      const ang = Math.atan2(e.clientY - drag.cy, e.clientX - drag.cx);
+      const ang = Math.atan2(p.y - drag.cy, p.x - drag.cx);
       item.rot = Math.round(drag.startRot + (ang - drag.startAngle) * 180 / Math.PI);
       item.rot = Math.round(item.rot / 5) * 5; // 5° 吸附
     } else if (drag.mode === 'scale') {
-      const dist = Math.hypot(e.clientX - drag.cx, e.clientY - drag.cy);
+      const dist = Math.hypot(p.x - drag.cx, p.y - drag.cy);
       const s = drag.startDist > 0 ? drag.startScale * dist / drag.startDist : drag.startScale;
       item.scale = Math.round(Math.min(300, Math.max(10, s)));
     }
