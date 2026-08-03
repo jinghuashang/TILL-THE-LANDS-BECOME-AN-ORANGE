@@ -63,7 +63,7 @@ vercel --prod
 
 ## 自定义贴纸
 
-图片素材托管于 `https://ark-img.jinghuashang.cn`（本地原件在 `assets/png/`）。把贴纸上传到 CDN 的 `assets/bc/` 路径，然后在 `app.js` 的 `PRESETS` 数组加一行：
+图片素材托管于 `https://ark-img.jinghuashang.cn`（本地原件在 `assets/png/`）。把贴纸上传到 CDN 的 `bc/` 路径，然后在 `app.js` 的 `PRESETS` 数组加一行：
 
 ```js
 { src: 'https://ark-img.jinghuashang.cn/bc/my-sticker.webp', name: '我的贴纸', scale: 60 },
