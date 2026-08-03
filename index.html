@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="pragma" content="no-cache">
+<meta http-equiv="cache-control" content="no-cache">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="description" content="明日方舟 2026 夏活「直到大地变成一颗酸橙」粉丝向图片工坊：上传照片，搭配安洁莉娜与活动标题贴纸，生成专属夏日明信片。">
+<meta name="keywords" content="明日方舟 明日方舟夏活 安洁莉娜 直到大地变成一颗酸橙 图片生成 明信片">
+<title>直到大地变成一颗酸橙 · 夏日明信片工坊</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23F0C030'/%3E%3Ccircle cx='24' cy='26' r='7' fill='%23FFF3D6'/%3E%3Cpath d='M32 32 L58 12 Q62 30 40 44 Z' fill='%2360B874'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Luckiest+Guy&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="root">
+
+  <!-- ======================================================
+       首页 —— 官方加载屏结构（fhLBlH）
+       ====================================================== -->
+  <div class="TC9ped mGGvyM" id="screen-home">
+    <div class="S0uHLr">
+      <div class="xWEVWP">
+        <div class="fhLBlH">
+          <div class="Nd3BC6">
+            <div class="QSDRU9"></div>
+            <div class="iAPbLV"></div>
+            <div class="zYarEn"></div>
+          </div>
+          <div class="Hj8rxM"></div>
+          <div class="yrqJlX" id="loadProgress">
+            <div class="ySKMlZ">
+              <div class="fu6h8Q"></div>
+              <div class="T_Xkmh" id="loadFill"><div class="D3Y2gA" id="loadPct"></div></div>
+            </div>
+          </div>
+          <div class="VkwsTH" id="btnStart">开始制作</div>
+        </div>
+      </div>
+    </div>
+    <header class="C8qWhk">
+      <div class="n1r4W1">
+        <div class="jB7Fug">
+          <div class="myXGiO ZXp7Ms" id="btnHelp" title="使用说明">
+            <div class="EWp46F"><div class="Kp1nvL"><div class="wKgr8m"><img class="ee80Fx" src="assets/ui/header_user_2.c5d041.png" alt="使用说明"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- ======================================================
+       编辑器 —— 官方主屏外壳（cSa5aU + C_Sd5t + fC8tEK）
+       ====================================================== -->
+  <div class="TC9ped" id="screen-editor">
+    <div class="cSa5aU">
+      <div class="C_Sd5t">
+        <div class="gp-shell">
+          <div class="gp-top">
+            <div class="gp-back" id="btnBack" title="返回首页"></div>
+            <div class="gp-title"><div class="gp-title-bg">夏日明信片工坊</div></div>
+            <div class="gp-actions">
+              <div class="gp-download" id="btnDownload">
+                <span class="TQws4y"></span><span class="tjgMFR">生成图片</span>
+              </div>
+            </div>
+          </div>
+          <div class="gp-body">
+            <!-- 左：上传 + 贴纸托盘 -->
+            <aside class="gp-left">
+              <div class="pm-title">上传照片</div>
+              <div class="pm-upload" id="btnUpload">选择照片</div>
+              <div class="pm-title mt">自定义贴纸</div>
+              <div class="pm-upload pm-upload-sticker" id="btnStickerUpload">上传贴纸</div>
+              <div class="pm-tip">支持拖拽图片到画布<br>支持 Ctrl+V 粘贴</div>
+              <div class="pm-title">选择贴纸</div>
+              <div class="tray" id="tray"></div>
+              <div class="pm-tip">点击贴纸添加到画布<br>画布中拖动移动 · 手柄旋转缩放</div>
+            </aside>
+            <!-- 中：画布 -->
+            <div class="gp-center" id="dropZone">
+              <div class="canvas-frame">
+                <div class="canvas-wrap" id="canvasWrap">
+                  <img id="photoLayer" class="photo-layer" alt="">
+                  <div id="stickersLayer" class="stickers-layer"></div>
+                  <div id="canvasHint" class="canvas-hint">上传一张照片开始制作<br><b>或直接把图片拖进画布</b></div>
+                </div>
+              </div>
+            </div>
+            <!-- 右：调整面板 -->
+            <aside class="gp-right">
+              <div class="pp-title">贴纸调整</div>
+              <div id="propEmpty" class="prop-empty">在画布中选择一个贴纸<br>即可调整大小 / 位置 / 旋转</div>
+              <div id="propBox" class="prop-box hidden">
+                <div class="prop-name" id="propName"></div>
+                <div class="prop-row">
+                  <span class="prop-label">大小</span>
+                  <input type="range" id="propScale" min="10" max="300" step="1">
+                  <span class="prop-val" id="propScaleVal">100%</span>
+                </div>
+                <div class="prop-row">
+                  <span class="prop-label">旋转</span>
+                  <input type="range" id="propRot" min="-180" max="180" step="1">
+                  <span class="prop-val" id="propRotVal">0°</span>
+                </div>
+                <div class="prop-row prop-btns">
+                  <button class="mini-btn" id="btnTop">置顶</button>
+                  <button class="mini-btn" id="btnUp">上移</button>
+                  <button class="mini-btn" id="btnDown">下移</button>
+                  <button class="mini-btn" id="btnBottom">置底</button>
+                </div>
+                <div class="prop-row prop-btns">
+                  <button class="mini-btn" id="btnDup">复制</button>
+                  <button class="mini-btn danger" id="btnDel">删除</button>
+                </div>
+              </div>
+              <div class="pp-title">画布背景</div>
+              <div class="prop-row">
+                <span class="prop-label">背景</span>
+                <div class="swatches" id="swatches">
+                  <button class="swatch" data-bg="photo" title="照片"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="9" cy="10" r="1.8" fill="currentColor"/><path d="M5 17l5-5 3 3 3-3 3 3" fill="none" stroke="currentColor" stroke-width="2"/></svg></button>
+                  <button class="swatch" data-bg="#FFFCE8" title="奶油色" style="background:#FFFCE8"></button>
+                  <button class="swatch" data-bg="#BFE3FF" title="天蓝色" style="background:#BFE3FF"></button>
+                  <button class="swatch" data-bg="#FFFFFF" title="白色" style="background:#FFFFFF"></button>
+                </div>
+              </div>
+              <label class="prop-row prop-check">
+                <input type="checkbox" id="chkPhoto" checked>
+                <span>显示照片</span>
+              </label>
+              <div class="prop-row prop-check">
+                <span class="prop-label">操作</span>
+                <span class="prop-hint">拖动移动 · 滚轮缩放 · Delete 删除</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </div>
+      <div class="fC8tEK"></div>
+    </div>
+    <header class="C8qWhk">
+      <div class="n1r4W1">
+        <div class="jB7Fug">
+          <div class="myXGiO ZXp7Ms" id="btnHelp3" title="使用说明">
+            <div class="EWp46F"><div class="Kp1nvL"><div class="wKgr8m"><img class="ee80Fx" src="assets/ui/header_user_2.c5d041.png" alt="使用说明"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </header>
+  </div>
+
+  <!-- ======================================================
+       完成层 —— 官方分享屏（q4Kqbr + tdGevx）
+       ====================================================== -->
+  <div class="share-layer hidden" id="doneLayer">
+    <div class="tdGevx">
+      <div class="share-close" id="btnDoneClose" title="关闭"></div>
+        <div class="sp-title">
+          <span class="sp-title-star"></span>
+          <span class="sp-title-text">明信片完成</span>
+          <span class="sp-title-deco"></span>
+        </div>
+        <div class="sp-body">
+          <div class="sp-img-wrap">
+            <div class="sp-img-frame"><img id="doneImg" alt="生成结果预览"></div>
+          </div>
+          <div class="sp-side">
+            <div class="sp-tip">已按最长边 1600px 导出 PNG<br>长按 / 右键图片也可保存</div>
+            <div class="sp-save" id="btnSave">保存图片</div>
+            <div class="sp-edit" id="btnEdit">继续编辑</div>
+            <div class="sp-home-link" id="btnHomeFromDone">返回首页</div>
+          </div>
+        </div>
+        <div class="sp-platforms">
+          <button class="sp-btn" data-share="weibo"><img src="assets/ui/weibo.e2843f.png" alt="">微博</button>
+          <button class="sp-btn" data-share="qq"><img src="assets/ui/qq.4ccbba.png" alt="">QQ</button>
+          <button class="sp-btn" data-share="qzone"><img src="assets/ui/qzone.86044f.png" alt="">空间</button>
+          <button class="sp-btn" data-share="download"><img src="assets/ui/download.4f4938.png" alt="">下载</button>
+        </div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       帮助弹窗 —— 官方 bigModalBg + ruleModalTitle
+       ====================================================== -->
+  <div class="dialog-mask hidden" id="helpLayer">
+    <div class="tZaxRi">
+      <div class="ruleModalTitle"><span class="rmt-text">使用详情</span></div>
+      <div class="A_qbrj" id="btnHelpClose" title="关闭"></div>
+      <ul class="help-list">
+        <li class="help-item"><span class="help-num">1</span><span class="help-text">点击「选择照片」上传自己的图片，或直接把图片拖进画布、Ctrl+V 粘贴。</span></li>
+        <li class="help-item"><span class="help-num">2</span><span class="help-text">在左侧「选择贴纸」里点击，把安洁莉娜 / 活动标题等贴纸加到画布上。</span></li>
+        <li class="help-item"><span class="help-num">3</span><span class="help-text">在画布中拖动贴纸移动位置；拖动手柄可以旋转、缩放；滚轮也能缩放。</span></li>
+        <li class="help-item"><span class="help-num">4</span><span class="help-text">右侧面板可以精确调整大小、旋转与图层顺序，不满意可随时删除重来。</span></li>
+        <li class="help-item"><span class="help-num">5</span><span class="help-text">点击「生成图片」导出高清 PNG，在完成页保存或分享。</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+</div>
+
+<input type="file" id="fileInput" accept="image/*" hidden>
+<input type="file" id="stickerInput" accept="image/*" hidden>
+<script src="app.js"></script>
+</body>
+</html>
