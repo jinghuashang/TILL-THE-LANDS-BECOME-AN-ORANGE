@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/ui/title_text.png" alt="直到大地变成一颗酸橙" width="420">
+  <img src="assets/ui/title_text.webp" alt="直到大地变成一颗酸橙" width="420">
 </p>
 
 <h1 align="center">直到大地变成一颗酸橙 · 夏日明信片工坊</h1>
