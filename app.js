@@ -14,7 +14,7 @@
   // 贴纸素材位于 assets/bc/，新增方法：把 PNG 放进去，在 PRESETS 里加一行
   const PRESETS = [
     { src: 'assets/bc/tilte.webp',              name: '活动标题 · 直到大地变成一颗酸橙', scale: 62 },
-    { src: 'assets/bc/anjielilaxiaor.png',     name: '安洁莉娜 · 夏日装扮', scale: 62 },
+    { src: 'assets/bc/anjielilaxiaor.webp',     name: '安洁莉娜 · 夏日装扮', scale: 62 },
     { src: 'assets/bc/anjielilafeix.webp',      name: '安洁莉娜 · 飞行', scale: 60 },
     { src: 'assets/bc/anjielilahenaicha.webp',  name: '安洁莉娜 · 喝奶茶', scale: 60 },
     { src: 'assets/bc/anjielilatantou.webp',    name: '安洁莉娜 · 探头', scale: 60 },
@@ -52,20 +52,22 @@
   const toastEl = $('#toast');
 
   /* ---------------- 舞台缩放：官方字体缩放体系（背景铺满视口，内容 rem 缩放） ---------------- */
+  // 手机竖屏（窄且高）时自动旋转 90° 横屏显示，长边不再空占用：
+  // 页面宽 = 视口高、页面高 = 视口宽，字号按旋转后的尺寸计算
+  function isPhonePortrait() {
+    return innerWidth < 768 && innerHeight > innerWidth;
+  }
   function fitStage() {
-    document.documentElement.style.fontSize = Math.min(innerWidth / 120, innerHeight / 67.5) + 'px';
+    const rot = isPhonePortrait();
+    document.body.classList.toggle('rotated', rot);
+    const w = rot ? innerHeight : innerWidth;
+    const h = rot ? innerWidth : innerHeight;
+    document.documentElement.style.fontSize = Math.min(w / 120, h / 67.5) + 'px';
+    document.body.classList.toggle('narrow-portrait', !rot && innerWidth < 720 && innerHeight > innerWidth);
     fitWrap();
     render();
   }
   addEventListener('resize', fitStage);
-
-  // 手机竖屏时字太小的保护：允许舞台内容的最小字号不低于 8px（仅限窄屏）
-  function guardTinyText() {
-    const narrow = innerWidth < 720 && innerHeight > innerWidth;
-    document.body.classList.toggle('narrow-portrait', narrow);
-  }
-  addEventListener('resize', guardTinyText);
-  guardTinyText();
 
   // 画布 wrap 尺寸：按画布区可用空间与照片比例计算
   function fitWrap() {

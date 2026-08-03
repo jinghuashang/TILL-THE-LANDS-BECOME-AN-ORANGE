@@ -251,6 +251,17 @@ body{font-family:var(--font-cn);font-size:1rem;color:#fff;background:linear-grad
 .help-num{flex:none;color:#fff;background-color:#2ebdf8;border-radius:50%;width:1.875rem;height:1.875rem;display:inline-flex;align-items:center;justify-content:center;font-family:var(--font-serif);font-size:1.0625rem;text-shadow:0 .125rem rgba(0,0,0,.3);box-shadow:0 .1875rem #4198b5}
 .help-text{flex:1}
 
+/* ---------- 手机竖屏自动旋转：长边不再空占用（旋转 90° 横屏显示） ---------- */
+body.rotated #root{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:100vh;
+  height:100vw;
+  margin:-50vw 0 0 -50vh;
+  transform:rotate(90deg);
+}
+
 /* ---------- 窄屏竖屏保护：关键文字保底字号（手机上看不见文字问题） ---------- */
 body.narrow-portrait .pm-title,
 body.narrow-portrait .pp-title,
