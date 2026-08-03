@@ -240,24 +240,22 @@
   let drag = null;
 
   // 手机竖屏旋转 90°（顺时针）后，屏幕坐标与页面坐标映射：
-  // 屏幕 (sx,sy) = (cx - py + H/2, cy + px - W/2)，反解：
-  // 页面 px = W/2 - cy + sy，py = H/2 + cx - sx
-  // （W=root 布局宽=视口高，H=root 布局高=视口宽）
+  // 以 root 的实测屏幕位置为准（免疫地址栏/滚动条导致的 vh 偏差）：
+  // 页面 px = W/2 + sy - Cy，py = H/2 + Cx - sx
+  // （W=root 布局宽，H=root 布局高，C=root 屏幕中心；旋转后 AABB 宽=H、高=W）
   function pagePoint(clientX, clientY) {
     if (!document.body.classList.contains('rotated')) return { x: clientX, y: clientY };
-    const W = innerHeight, H = innerWidth;
-    const cx = innerWidth / 2, cy = innerHeight / 2;
-    return { x: W / 2 - cy + clientY, y: H / 2 + cx - clientX };
+    const rr = document.getElementById('root').getBoundingClientRect();
+    const W = rr.height, H = rr.width;
+    const Cx = rr.left + rr.width / 2, Cy = rr.top + rr.height / 2;
+    return { x: W / 2 + clientY - Cy, y: H / 2 + Cx - clientX };
   }
   function canvasGeom() {
     const rect = wrap.getBoundingClientRect();
     const rotated = document.body.classList.contains('rotated');
-    return {
-      w: rotated ? rect.height : rect.width,
-      h: rotated ? rect.width : rect.height,
-      cx: rotated ? innerHeight / 2 : rect.left + rect.width / 2,
-      cy: rotated ? innerWidth / 2 : rect.top + rect.height / 2,
-    };
+    if (!rotated) return { w: rect.width, h: rect.height, cx: rect.left + rect.width / 2, cy: rect.top + rect.height / 2 };
+    // 旋转后 AABB 宽高互换；页面坐标中心 = wrap 布局尺寸的一半
+    return { w: rect.height, h: rect.width, cx: rect.height / 2, cy: rect.width / 2 };
   }
 
   function startDrag(e, mode, id) {
