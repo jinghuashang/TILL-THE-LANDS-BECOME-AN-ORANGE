@@ -13,11 +13,11 @@
   /* ---------------- 预设贴纸清单 ---------------- */
   // 贴纸素材位于 assets/bc/，新增方法：把 PNG 放进去，在 PRESETS 里加一行
   const PRESETS = [
-    { src: 'assets/bc/tilte.png',              name: '活动标题 · 直到大地变成一颗酸橙', scale: 62 },
+    { src: 'assets/bc/tilte.webp',              name: '活动标题 · 直到大地变成一颗酸橙', scale: 62 },
     { src: 'assets/bc/anjielilaxiaor.png',     name: '安洁莉娜 · 夏日装扮', scale: 62 },
-    { src: 'assets/bc/anjielilafeix.png',      name: '安洁莉娜 · 飞行', scale: 60 },
-    { src: 'assets/bc/anjielilahenaicha.png',  name: '安洁莉娜 · 喝奶茶', scale: 60 },
-    { src: 'assets/bc/anjielilatantou.png',    name: '安洁莉娜 · 探头', scale: 60 },
+    { src: 'assets/bc/anjielilafeix.webp',      name: '安洁莉娜 · 飞行', scale: 60 },
+    { src: 'assets/bc/anjielilahenaicha.webp',  name: '安洁莉娜 · 喝奶茶', scale: 60 },
+    { src: 'assets/bc/anjielilatantou.webp',    name: '安洁莉娜 · 探头', scale: 60 },
   ];
 
   /* ---------------- 状态 ---------------- */
