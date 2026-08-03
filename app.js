@@ -239,14 +239,15 @@
   /* ---------------- 指针交互（拖动 / 旋转 / 缩放） ---------------- */
   let drag = null;
 
-  // 手机竖屏旋转 90° 后，屏幕坐标与页面坐标错位：
-  // 屏幕 (sx,sy) -> 页面 (px,py)：px = W/2 + cy - sy，py = H/2 - cx + sx
+  // 手机竖屏旋转 90°（顺时针）后，屏幕坐标与页面坐标映射：
+  // 屏幕 (sx,sy) = (cx - py + H/2, cy + px - W/2)，反解：
+  // 页面 px = W/2 - cy + sy，py = H/2 + cx - sx
   // （W=root 布局宽=视口高，H=root 布局高=视口宽）
   function pagePoint(clientX, clientY) {
     if (!document.body.classList.contains('rotated')) return { x: clientX, y: clientY };
     const W = innerHeight, H = innerWidth;
     const cx = innerWidth / 2, cy = innerHeight / 2;
-    return { x: W / 2 + cy - clientY, y: H / 2 - cx + clientX };
+    return { x: W / 2 - cy + clientY, y: H / 2 + cx - clientX };
   }
   function canvasGeom() {
     const rect = wrap.getBoundingClientRect();
@@ -254,8 +255,8 @@
     return {
       w: rotated ? rect.height : rect.width,
       h: rotated ? rect.width : rect.height,
-      cx: rotated ? innerWidth / 2 : rect.left + rect.width / 2,
-      cy: rotated ? innerHeight / 2 : rect.top + rect.height / 2,
+      cx: rotated ? innerHeight / 2 : rect.left + rect.width / 2,
+      cy: rotated ? innerWidth / 2 : rect.top + rect.height / 2,
     };
   }
 
